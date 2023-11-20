@@ -1,4 +1,4 @@
-export const sampleQuestions = [
+export const questions = [
   {
     question: "What is the speed of light?",
     subject: "Physics",
