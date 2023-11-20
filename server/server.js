@@ -1,9 +1,11 @@
 import express from 'express';
 import dotenv from "dotenv";
+import cors from "cors";
 const app = express();
 import QuestionPaperRouter from "./routes/questionpaper.route.js"
 const PORT = process.env.PORT || 4000;
 dotenv.config();
+app.use(cors())
 app.use(express.json())
 
 app.get('/', (req, res) => {
