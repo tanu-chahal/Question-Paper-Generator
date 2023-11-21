@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import createError from "../createError.js"
 import {getQuestionsByDifficulty} from '../utils.js';
 import {questions} from '../data.js';
 
@@ -6,12 +7,12 @@ export const GetQuestionPaper = (req,res)=>{
   return res.status(200).json({"msg": "To generate question paper, send a post request with no. of questions & difficulty distribution object in request body."})
 }
 
-export const GenerateQuestionPaper = (req,res)=> {
+export const GenerateQuestionPaper = (req,res,next)=> {
   const {totalMarks, distribution} = req.body;
   const questionPaper = [];
 
   if(_.reduce(distribution, function(result, value, key) { return result + value;}, 0) !== 100){
-    return res.status(400).json({"errMsg":'Invalid distribution. The sum of percentages should be 100.'});
+    return next(createError(400,'Invalid distribution. The sum of percentages should be 100.'));
   }
 
   _.forEach(distribution, (percentage, difficulty) => {
@@ -20,14 +21,14 @@ export const GenerateQuestionPaper = (req,res)=> {
     const difficultyQuesCount = difficultyQuestions.length;
 
     if(difficultyQuesCount < reqQuesForDifficulty){
-      return res.status(400).json({"errMsg" : `Don't have enough ${difficulty} questions for this distribution.`});
+      return next(createError(400,`Don't have enough ${difficulty} questions for this distribution.`));
     }
     const selectedQuestions = _.sampleSize(difficultyQuestions, reqQuesForDifficulty);
     questionPaper.push(...selectedQuestions);
   });
 
   if (questionPaper.length*5 !== totalMarks) {
-  return res.status(400).json({"errMsg" : 'Failed to generate question paper. Check distribution percentages.'});
+  return next(createError(400,'Failed to generate question paper. Distribution percentages or marks for each question doesn\'t sync with (or make) total marks.'));
   }
   return res.status(201).json({questionPaper})
 }
