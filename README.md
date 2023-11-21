@@ -1,6 +1,6 @@
 # Question Paper Generator
 
-This is a simple Question Paper Generator application that allows you to generate question papers based on the total marks and difficulty distribution. The project consists of a backend server and a frontend user interface.
+This is a simple Question Paper Generator application that allows you to generate question papers based on the total marks and difficulty distribution. The project consists of a backend server and a small frontend user interface.
 
 ## Preview
 
@@ -32,5 +32,9 @@ npm install
 ```bash
 npm start
 ```
+4. By default the backend server starts at ```http://localhost:4000/```, you can run it any other server by creating a ```.env``` file in ```server``` directory & setting up the variable:
+```
+PORT = <another-port>
+```
 
-4. To see frontend simply use the live server extension in ui directory.
+5. To see frontend simply use the live server extension in ```ui``` directory or can also view the ```index.html``` file in any  simply by double clicking on it.
